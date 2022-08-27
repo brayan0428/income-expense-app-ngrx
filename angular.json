@@ -95,6 +95,16 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "income-expense-app-redux:build:production",
+            "firebaseProject": "income-expense-app-3ef3d",
+            "firebaseHostingSite": "income-expense-app-3ef3d"
+          }
         }
       }
     }

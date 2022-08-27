@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "income-expense-app-3ef3d": {
+      "hosting": {
+        "income-expense-app-redux": [
+          "income-expense-app-3ef3d"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "income-expense-app-3ef3d"
+  }
+}
