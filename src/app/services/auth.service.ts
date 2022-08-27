@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Auth } from '@angular/fire/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +8,10 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 export class AuthService {
 
   constructor(private auth:AngularFireAuth) {}
+
+  userStatus(){
+    this.auth.authState.subscribe(user => console.log(user))
+  }
 
   createUser(email:string, password:string){
     return this.auth.createUserWithEmailAndPassword(email, password)
@@ -19,5 +23,9 @@ export class AuthService {
 
   logout(){
     return this.auth.signOut()
+  }
+
+  isAuth(){
+    return this.auth.authState.pipe(map(user => user != null))
   }
 }
