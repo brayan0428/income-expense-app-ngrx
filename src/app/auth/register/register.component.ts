@@ -37,8 +37,8 @@ export class RegisterComponent implements OnInit {
 
   onSubmit(){
     Swal.showLoading()
-    const {email, password} = this.form.value
-    this.authService.createUser(email, password)
+    const {name, email, password} = this.form.value
+    this.authService.createUser(name, email, password)
       .then(data => {
         Swal.close()
         this.router.navigate(['/'])
