@@ -12,6 +12,7 @@ import { User } from '../models/user.model';
 })
 export class AuthService {
   userDataSubscription:Subscription;
+  private _user:User;
 
   constructor(
     private auth:AngularFireAuth, 
@@ -19,14 +20,19 @@ export class AuthService {
     private store:Store<AppState>
   ) {}
 
+  get user(){
+    return this._user;
+  }
+
   userStatus(){
     this.auth.authState.subscribe(user => {
-      console.log(user)
       this.userDataSubscription = this.firestore.doc(`${user?.uid}/user`).valueChanges().subscribe((userData:any) => {
         if(userData){
           const newUser = new User(userData.uid, userData.name, userData.email)
+          this._user = newUser;
           this.store.dispatch(setUser({user: newUser}))
         }else{
+          this._user = null;
           this.userDataSubscription.unsubscribe()
           this.store.dispatch(removeUser())
         }
