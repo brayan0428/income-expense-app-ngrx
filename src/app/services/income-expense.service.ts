@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { map } from 'rxjs';
 import { IncomeExpense } from '../models/income-expense.model';
 import { AuthService } from './auth.service';
 
@@ -19,5 +20,25 @@ export class IncomeExpenseService {
       .doc(`${uid}/incomes-expenses`)
       .collection('items')
       .add({ description, type, amount });
+  }
+
+  suscribeItems(uidUser: string) {
+    return this.firestore
+      .collection(`${uidUser}/incomes-expenses/items`)
+      .snapshotChanges()
+      .pipe(
+        map((items) =>
+          items.map((item) => ({
+            uid: item.payload.doc.id,
+            ...(item.payload.doc.data() as any),
+          }))
+        )
+      );
+  }
+
+  deleteItem(uidItem: string) {
+    return this.firestore
+      .doc(`${this.authService.user.uid}/incomes-expenses/items/${uidItem}`)
+      .delete();
   }
 }
